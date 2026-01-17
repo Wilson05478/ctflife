@@ -39,6 +39,7 @@ export function QuizView(props: { toggleQuiz: any; sectionId: any; notify: any; 
     const completeQuiz = async (cancelled: boolean, timeoutId: number) => {
 
         try {
+            console.log(timeoutId);
             const res = await postData(`/student/student/section/${sectionId}/submit?correct=true`);
             // assume res.data or res has status field — adapt to your API shape
             const status = res?.data?.status ?? res?.status ?? null;
@@ -88,7 +89,7 @@ export function QuizView(props: { toggleQuiz: any; sectionId: any; notify: any; 
             const status = res?.data?.status ?? res?.status ?? null;
 
             if (status === "ready" || status === "enrolled") {
-              setData(res)
+              setData(res);
               setLoading(false);
               return;
             }
@@ -232,7 +233,6 @@ export function SectionsPath(props: { lessonId: any; setSectionId: any; toggleQu
         };
     
         pollEnroll();
-        console.log(data);
         return () => {
           cancelled = true;
           if (timeoutId) clearTimeout(timeoutId);
