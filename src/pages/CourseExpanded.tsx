@@ -36,22 +36,41 @@ export function QuizView(props: { toggleQuiz: any; sectionId: any; notify: any; 
     const [answer, setAnswer] = useState<string>('');
 
 
-    const completeQuiz = async () => {
+    const completeQuiz = async (cancelled: boolean, timeoutId: number) => {
+
         try {
-            await postData(`/student/student/section/${sectionId}/submit?correct=true`);
-        } catch (error) {
-            console.error("Error completing quiz:", error);
-        }
+            const res = await postData(`/student/student/section/${sectionId}/submit?correct=true`);
+            // assume res.data or res has status field — adapt to your API shape
+            const status = res?.data?.status ?? res?.status ?? null;
+
+            if (status === "success") {
+              setLoading(false);
+              return;
+            }
+        
+            if (!cancelled) {
+              // schedule next poll after 2s
+              timeoutId = window.setTimeout(completeQuiz, 2000);
+            }
+          } catch (err: any) {
+            setError(err);
+            setLoading(false);
+            // optionally stop on error or retry:
+            if (!cancelled) timeoutId = window.setTimeout(completeQuiz, 10000);
+          }
     }
 
     const checkanswer = () => {
+        let cancelled = false;
+        let timeoutId: number | undefined;
+        
         if (answer === '') {
             notify("Please select an answer before submitting.", 'error');
             return;
         }
         if (answer === data.quiz.correct_answer) {
             notify("Correct answer!", 'success');
-            completeQuiz();
+            completeQuiz(cancelled, timeoutId? timeoutId: 0);
             setIsExplanation(true);
         } else {
             notify("Wrong answer. Try again!", 'error');
