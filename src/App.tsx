@@ -11,8 +11,6 @@ import { BottomNav, Header } from './components/Layout';
 import { 
   View, 
   User, 
-  Transaction, 
-  TransactionCategory, 
   RewardItem, 
   EventItem, 
 } from './types';
