@@ -3,7 +3,6 @@ import { View } from '../types';
 import { 
   Home, 
   BookOpen, 
-  PieChart, 
   Gift, 
   Calendar, 
   LogOut 

@@ -13,7 +13,6 @@ import {
   User, 
   Transaction, 
   TransactionCategory, 
-  Lesson, 
   RewardItem, 
   EventItem, 
 } from './types';
@@ -63,10 +62,6 @@ export default function App() {
   };
 
   const [user, setUser] = useState<User>(INITIAL_USER);
-  const [transactions, setTransactions] = useState<Transaction[]>([
-    { id: 't1', storeName: 'Starbucks', amount: 45, date: '2023-10-24', category: TransactionCategory.FOOD, isPartner: false },
-    { id: 't2', storeName: 'Giordano', amount: 250, date: '2023-10-23', category: TransactionCategory.SHOPPING, isPartner: true },
-  ]);
   const [events] = useState<EventItem[]>(MOCK_EVENTS);
   const [showNotification, setShowNotification] = useState<{msg: string, type: 'success' | 'error'} | null>(null);
 

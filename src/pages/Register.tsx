@@ -74,7 +74,7 @@ export default function Register(props: { View: any; toggleView: any; notify: an
           interests: form.interests.join(","),
         };
         try{
-              const response = await axios.post("/users/register", newUser);
+              await axios.post("/users/register", newUser);
               notify('User Registered Successfully', 'success');
               toggleView(View.LOGIN);
             } catch(error){

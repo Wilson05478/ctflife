@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 
-export default function UserInfo(porps) {
+export default function UserInfo(porps: { handleUserInfo: any; form: any; toggleForm: any; }) {
     const {handleUserInfo, form, toggleForm} = porps;
     return(
         <div >

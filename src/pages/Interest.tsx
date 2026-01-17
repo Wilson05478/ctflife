@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, TextField } from "@mui/material";
 import { ChessQueen, Crown, FlaskConical, Headset, Palette } from "lucide-react";
 
-export default function Interest(props) {
+export default function Interest(props: { handleSubmit: any; form: any; toggleForm: any; toggleFormInterest: any; }) {
     const {handleSubmit, form, toggleForm, toggleFormInterest} = props;
     return(
         <div >

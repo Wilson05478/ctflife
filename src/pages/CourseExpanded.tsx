@@ -1,7 +1,7 @@
 
 import { fetchData, postData } from "../api";
 import { ChevronLeft } from "lucide-react";
-import { useEffect, useState, CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -38,6 +38,7 @@ export function QuizView(props: { toggleQuiz: any; sectionId: any; notify: any; 
 
     const completeQuiz = async () => {
         try {
+            await postData(`/student/student/section/${sectionId}/submit?correct=true`);
         } catch (error) {
             console.error("Error completing quiz:", error);
         }
@@ -50,6 +51,7 @@ export function QuizView(props: { toggleQuiz: any; sectionId: any; notify: any; 
         }
         if (answer === data.quiz.correct_answer) {
             notify("Correct answer!", 'success');
+            completeQuiz();
             setIsExplanation(true);
         } else {
             notify("Wrong answer. Try again!", 'error');
@@ -116,7 +118,7 @@ export function QuizView(props: { toggleQuiz: any; sectionId: any; notify: any; 
                 fullWidth
                 style={{width: '100%', marginTop: '30px', height: '50px', fontSize: '18px'}}
                 onClick={()=>{
-                    {toggleQuiz(), setIsExplanation(false), setStartQuiz(false), setAnswer(''), completeQuiz()};
+                    {toggleQuiz(), setIsExplanation(false), setStartQuiz(false), setAnswer('')};
                 }}
             >Close Quiz</Button>
         </div>) :(!startQuiz ? ( 
@@ -182,7 +184,7 @@ export function SectionsPath(props: { lessonId: any; setSectionId: any; toggleQu
         const pollEnroll = async () => {
           try {
             const res = await postData(`/student/student/course/${lessonId}/enroll`);
-            fetchData(`/student/student/course/${lessonId}`)
+            await fetchData(`/student/student/course/${lessonId}`)
             .then(data => {
                 setData(data && typeof data === "object" ? data : {});
                 setLoading(false);
@@ -211,7 +213,7 @@ export function SectionsPath(props: { lessonId: any; setSectionId: any; toggleQu
         };
     
         pollEnroll();
-    
+        console.log(data);
         return () => {
           cancelled = true;
           if (timeoutId) clearTimeout(timeoutId);
